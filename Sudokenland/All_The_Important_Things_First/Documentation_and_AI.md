@@ -32,6 +32,7 @@ allocates a Pygame surface, and then blits each character at the correct x and y
 so backgrounds can remain transparent. I built it this way to keep all art and its rendering in one place. The first struggle 
 was caption spacing. I wanted names under portraits without misalignment, so I added internal padding inside the rendered surface and kept a 
 consistent baseline so captions sit nicely under different portraits.
+
 **AI USE** I was struggling with the adjustement of size and its placement and after I had done the ASCII code, so I asked ChatGPT to help me with 
 the formating. Thus, the rendering came alive and the function forcing it ('render_ascii_surface).
 
@@ -47,7 +48,9 @@ Title listens for ENTER to advance and ESC to quit. Character select uses the AS
 Story draws the Queen and Dyskalkulo portraits and asks for help;
 pressing Y advances, N shows a short blackout message and returns to title. I wrote two small helpers, `load_font(size)` and `draw_centered_text(surface, text, y, font, color)`,
 so type and layout look consistent across screens. I made each screen a pure function that polls events, draws, and returns a result because this keeps transitions explicit and debuggable.
-**AI USEE** 
+
+
+**AI USEE**
 Creating this interactive/ input-output code really made me struggle with the overall feedback and how to implement it into the following
 code. I used AI to help me bring a structure to my code and where to put which loop and function so that it would make sense.
 
@@ -89,6 +92,7 @@ I moved help rendering into `draw_help_overlay(surface, state)` which paints a t
 short messages appear through `draw_status(surface, message)` at the bottom. This layering keeps the grid readable and the controls visible at all times.
 
  **AI USE**
+
 For this screen I consulted OpenAI to validate the API shape start_sudoku(level_index, data_dir) -> str and to settle on three explicit return states (completed, back, quit). 
  The assistant suggested separating drawing into draw_board, draw_help_overlay, and draw_status to avoid overlay conflicts,
  and recommended keeping a fixed_mask derived from the start grid so original clues cannot be overwritten. The alternating hint behavior and the key map (H for hint, L for auto-solve, E for back) were co-designed with ChatGPT. 
@@ -123,6 +127,7 @@ If a file is missing I show a short message. If it is locked I tell the player w
 Then I continued to do `run_sudoku_level(level_index) -> str` which imports `start_sudoku` locally to avoid circular imports and returns its result. 
 I also made sure that whenever the program transitions into the world state, the main loop reloads progress from disk and passes that value to `screen_world_map`. 
 That detail matters for the reset flow later.
+
 **AI USE**
 I consulted AI (Notion) on when to reload progress from disk to make resets take effect immediately. 
 The load-on-entry approach for the world map and the explicit messages for missing or locked levels came from that review; I integrated and tested the changes.
@@ -155,6 +160,7 @@ I refined `screen_ending(screen, clock)`. It first displays a short fireworks vi
 then cuts to a two-line epilogue. The epilogue reads: You feel happy, but dizzy suddenly. The world starts turning in front of your eyes and you faint.
 After a short display time the function returns `title` which brings the game back to the opening screen. 
 I kept the ending on a timer rather than a keypress to avoid accidental skips and to keep the pacing consistent.
+
 **AI USE** 
 I did not know how to finish and exit the game altogether in a way that it would come back to my home screen, so I turned to AI.
 Also, it helped me with creating the fireworks.
